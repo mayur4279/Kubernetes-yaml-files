@@ -1,0 +1,27 @@
+apiVersion: v1 
+kind: Pod
+metadata: 
+  name: my-pod 
+  labels: 
+    app: v1 
+spec: 
+  containers:   
+    - name: project    
+      image: mayur4279/college_project:project_v1
+      ports:  
+        - containerPort: 8000  
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-pod-service
+spec:
+  type: ClusterIP
+  selector:
+    app: v1  # Update the selector to match the Pod labels
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+
