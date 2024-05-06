@@ -1,0 +1,61 @@
+apiVersion: v1           #sample pod 1 yaml file  
+kind: Pod
+metadata:
+  name: my-pod 
+  labels: 
+   app: xyz-app 
+spec:
+  containers:
+  - name: my-pod-container 
+    image: nginx
+    ports:
+      - name: http
+        protocol: TCP
+        containerPort: 80
+---
+apiVersion: v1          #sample pod 2 yaml file 
+kind: Pod
+metadata:
+  name: my-pod2 
+  labels: 
+   app: xyz-app 
+spec:
+  containers:
+  - name: my-pod-container 
+    image: nginx
+    ports:
+      - name: http
+        protocol: TCP
+        containerPort: 80
+---  
+
+apiVersion: apps/v1               #replicaset file ( the actual important file )   
+kind: ReplicaSet
+metadata:
+  name: my-rs
+spec: 
+  replicas: 3
+  selector:
+    matchExpressions:
+      - key: "app"
+        operator: "In"
+        values: ["xyz-app", "cbz-app"]
+  template: 
+    metadata: 
+      labels:
+        app: cbz-app 
+    spec:
+      containers:
+      - name: my-pod-container 
+        image: nginx
+        ports:
+          - name: http
+            protocol: TCP
+            containerPort: 80
+
+#After applying this file only 3 pods are created this is the spaciality of replicaset file  
+# Relicaset file is only focus on labels  
+
+
+
+
